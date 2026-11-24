@@ -1,0 +1,12 @@
+{% extends "base_public.html" %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h1>You are offline</h1>
+  <p class="lead">This page could not be loaded because there is no connection to the SmartConnect server.</p>
+  <p class="text-muted">Security staff: open the <strong>QR Scanner</strong> page once while online. After that it keeps
+    working offline - scans are saved on the phone as <strong>PENDING</strong> and sent to the server automatically
+    when the connection returns.</p>
+  <a class="btn btn-primary" href="/security/scanner">Open scanner</a>
+  <button class="btn btn-outline-primary" onclick="location.reload()">Try again</button>
+</div>
+{% endblock %}

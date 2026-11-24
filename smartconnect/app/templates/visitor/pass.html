@@ -1,0 +1,46 @@
+{% extends "base_public.html" %}
+{% block content %}
+<div class="container my-4" style="max-width:900px">
+  <div id="noPass" class="card d-none"><div class="card-body text-center p-5">
+    <h2 class="h4">No visitor pass on this device</h2>
+    <p class="text-muted">Register your visit first. Your private pass link is stored on the device you registered with.</p>
+    <a class="btn btn-primary" href="{{ url_for('pages.register') }}">Register a visit</a>
+  </div></div>
+
+  <div id="passView" class="row g-3 d-none">
+    <div class="col-md-5">
+      <div class="card"><div class="card-body text-center">
+        <div class="qr-box"><img id="qrImg" alt="Your QR visitor pass"></div>
+        <p class="small text-muted mt-2 mb-1">Show this QR code to the security guard.</p>
+        <p class="small mb-2">Valid until <strong id="qrExpiry">—</strong></p>
+        <button class="btn btn-outline-primary btn-sm" id="newPassBtn">Get a new QR pass</button>
+        <p class="small text-muted mt-2 mb-0">A new pass cancels the old one. The QR contains only a random
+          code - no personal information.</p>
+      </div></div>
+    </div>
+    <div class="col-md-7">
+      <div class="card mb-3"><div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div><h2 class="h5 mb-0" id="vName">—</h2><div class="text-muted small" id="vMeta"></div></div>
+          <span id="vStatus"></span>
+        </div>
+        <hr>
+        <dl class="row mb-0 small">
+          <dt class="col-5">Host</dt><dd class="col-7" id="vHost">—</dd>
+          <dt class="col-5">Department</dt><dd class="col-7" id="vDept">—</dd>
+          <dt class="col-5">Purpose</dt><dd class="col-7" id="vPurpose">—</dd>
+          <dt class="col-5">Expected</dt><dd class="col-7" id="vExpected">—</dd>
+          <dt class="col-5">Pass state</dt><dd class="col-7" id="vPass">—</dd>
+        </dl>
+      </div></div>
+      <div class="card"><div class="card-header">Visit progress</div><div class="card-body">
+        <ul class="timeline mb-0" id="timeline"></ul>
+      </div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ vendor('socket.io.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pass.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,13 @@
+# Core dependencies (work on Windows, macOS, Linux). Install with:
+#   pip install -r requirements.txt
+Flask>=3.0,<4
+Flask-SQLAlchemy>=3.1,<4
+SQLAlchemy>=2.0,<3
+Flask-Migrate>=4.0,<5
+Flask-SocketIO>=5.3,<6
+simple-websocket>=1.0        # real WebSocket transport for Flask-SocketIO
+qrcode[pil]>=7.4,<9          # QR image generation (pulls in Pillow)
+python-dotenv>=1.0
+cryptography>=42             # used by scripts/make_cert.py (LAN HTTPS certificate)
+tzdata>=2024.1               # timezone database (needed on Windows)
+pytest>=8.0

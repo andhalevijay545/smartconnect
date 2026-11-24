@@ -1,0 +1,46 @@
+# Render "Blueprint": creates the web service AND a PostgreSQL database in one go.
+# Render dashboard -> New -> Blueprint -> pick your GitHub repo.
+databases:
+  - name: smartconnect-db
+    plan: free
+    databaseName: smartconnect
+    user: smartconnect
+
+services:
+  - type: web
+    name: smartconnect
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements-prod.txt
+    # 1) init-db creates the tables, 2) seed creates departments, gates and the first admin,
+    # 3) gunicorn serves the app. ONE worker + many threads: Flask-SocketIO keeps the
+    # WebSocket clients and live counters in the memory of this single process.
+    startCommand: >-
+      flask --app wsgi init-db &&
+      flask --app wsgi seed --no-demo &&
+      gunicorn --worker-class gthread --workers 1 --threads 100 --timeout 120
+      --bind 0.0.0.0:$PORT wsgi:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: APP_ENV
+        value: production
+      - key: NETWORK_MODE
+        value: WAN
+      - key: BEHIND_PROXY          # Render's load balancer terminates TLS and adds X-Forwarded-* headers
+        value: "true"
+      - key: FORCE_HTTPS
+        value: "true"
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: smartconnect-db
+          property: connectionString
+      - key: SEED_ADMIN_USERNAME
+        value: admin
+      - key: SEED_ADMIN_PASSWORD
+        sync: false                # you type this in the Render dashboard; never put it in git

@@ -1,0 +1,38 @@
+flowchart LR
+  V(["Visitor"])
+  G(["Security staff"])
+  H(["Host employee"])
+  A(["Admin"])
+  subgraph SYS["SmartConnect"]
+    U1("Register visit")
+    U2("Receive QR pass")
+    U3("View visit status")
+    U4("Scan QR with phone camera")
+    U5("Verify pass")
+    U6("Check-in / check-out")
+    U7("Scan while offline - sync later")
+    U8("Approve or reject visitor")
+    U9("View expected visitors")
+    U10("Live dashboard")
+    U11("Manage users, gates, departments")
+    U12("Reports and CSV export")
+    U13("Network monitoring")
+    U14("View audit log")
+  end
+  V --- U1
+  V --- U2
+  V --- U3
+  G --- U4
+  G --- U5
+  G --- U6
+  G --- U7
+  H --- U8
+  H --- U9
+  A --- U10
+  A --- U11
+  A --- U12
+  A --- U13
+  A --- U14
+  U4 -. include .-> U5
+  U6 -. include .-> U5
+  U7 -. extend .-> U6

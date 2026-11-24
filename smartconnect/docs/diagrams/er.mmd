@@ -1,0 +1,110 @@
+erDiagram
+  DEPARTMENTS ||--o{ HOSTS : "has"
+  DEPARTMENTS ||--o{ VISITORS : "visited"
+  HOSTS ||--o{ VISITORS : "receives"
+  HOSTS ||--o{ APPROVALS : "decides"
+  GATES ||--o{ SECURITY_STAFF : "assigned to"
+  VISITORS ||--o{ QR_PASSES : "owns"
+  VISITORS ||--o| APPROVALS : "needs"
+  VISITORS ||--o{ VISIT_LOGS : "makes"
+  QR_PASSES ||--o{ VISIT_LOGS : "used for"
+  GATES ||--o{ VISIT_LOGS : "entry / exit"
+  SECURITY_STAFF ||--o{ VISIT_LOGS : "records"
+  SECURITY_STAFF ||--o{ SYNC_OPERATIONS : "uploads"
+  ADMINS {
+    int id PK
+    string username UK
+    string password_hash
+    bool is_active
+  }
+  SECURITY_STAFF {
+    int id PK
+    string username UK
+    string password_hash
+    int gate_id FK
+  }
+  HOSTS {
+    int id PK
+    string username UK
+    string password_hash
+    int department_id FK
+  }
+  DEPARTMENTS {
+    int id PK
+    string name UK
+    bool is_active
+  }
+  GATES {
+    int id PK
+    string name UK
+    string location
+    bool is_active
+  }
+  VISITORS {
+    int id PK
+    string public_id UK
+    string full_name
+    string mobile
+    string email
+    string purpose
+    int department_id FK
+    int host_id FK
+    datetime expected_at
+    string status
+    string access_key_hash
+  }
+  QR_PASSES {
+    int id PK
+    int visitor_id FK
+    string token_hash UK
+    datetime expires_at
+    bool revoked
+    datetime checkin_consumed_at
+    datetime checkout_consumed_at
+  }
+  APPROVALS {
+    int id PK
+    int visitor_id FK
+    int host_id FK
+    string status
+    string remarks
+    datetime decided_at
+  }
+  VISIT_LOGS {
+    int id PK
+    int visitor_id FK
+    int qr_pass_id FK
+    datetime check_in_at
+    datetime check_out_at
+    int check_in_gate_id FK
+    int check_out_gate_id FK
+    int check_in_staff_id FK
+    string source
+  }
+  SYNC_OPERATIONS {
+    int id PK
+    string operation_id UK
+    string device_id
+    int staff_id FK
+    string op_type
+    string token_hash
+    string status
+  }
+  COMMUNICATION_LOGS {
+    int id PK
+    datetime timestamp
+    string device_id
+    string endpoint
+    string method
+    int status_code
+    float duration_ms
+    bool success
+    string network_type
+  }
+  AUDIT_LOGS {
+    int id PK
+    datetime timestamp
+    string actor_type
+    string action
+    string entity_id
+  }

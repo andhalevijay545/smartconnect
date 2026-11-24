@@ -1,0 +1,8 @@
+{% extends "base_public.html" %}
+{% block content %}
+<div class="container py-5 text-center">
+  <h1 class="display-4">{{ code }}</h1>
+  <p class="lead">{{ message }}</p>
+  <a class="btn btn-primary" href="{{ url_for('pages.index') }}">Back to home</a>
+</div>
+{% endblock %}

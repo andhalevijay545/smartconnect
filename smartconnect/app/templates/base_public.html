@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+<header class="public-top">
+  <a href="{{ url_for('pages.index') }}" class="d-flex align-items-center gap-2 fw-bold">
+    <span class="brand-mark">SC</span> SmartConnect
+  </a>
+  <span class="ms-auto d-flex gap-2 align-items-center">
+    <span class="net-badge text-dark d-none d-sm-inline" id="netBadge"><span class="dot"></span><span class="txt">Checking…</span></span>
+    <a class="btn btn-light btn-sm" href="{{ url_for('pages.register') }}">Register visit</a>
+    <a class="btn btn-outline-light btn-sm" href="{{ url_for('pages.login') }}">Staff login</a>
+  </span>
+</header>
+{% block content %}{% endblock %}
+{% endblock %}

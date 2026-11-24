@@ -1,0 +1,21 @@
+{% extends "base_app.html" %}
+{% block content %}
+{% include "_dash_stats.html" %}
+<div class="card mb-3">
+  <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
+    <span>Approval requests <span class="badge text-bg-warning" id="pendingBadge">0</span></span>
+    <select class="form-select form-select-sm w-auto" id="approvalFilter" aria-label="Filter by status">
+      <option value="PENDING">Pending</option><option value="APPROVED">Approved</option>
+      <option value="REJECTED">Rejected</option><option value="ALL">All</option>
+    </select>
+  </div>
+  <div class="card-body"><div class="row g-3" id="approvalList"></div></div>
+</div>
+<div class="card"><div class="card-header">Recent activity</div><div class="card-body"><ul class="feed" id="feed"></ul></div></div>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ vendor('chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/host.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+  "name": "SmartConnect Visitor Management",
+  "short_name": "SmartConnect",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a2a66",
+  "icons": [{"src": "/static/img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

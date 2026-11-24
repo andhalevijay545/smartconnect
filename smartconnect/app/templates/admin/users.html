@@ -1,0 +1,37 @@
+{% extends "base_app.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+  <div class="seg" role="group" aria-label="Account type">
+    <input type="radio" name="role" id="rSec" value="security" checked><label for="rSec">Security staff</label>
+    <input type="radio" name="role" id="rHost" value="host"><label for="rHost">Hosts</label>
+    <input type="radio" name="role" id="rAdm" value="admin"><label for="rAdm">Admins</label>
+  </div>
+  <button class="btn btn-primary ms-auto" id="addBtn">Add account</button>
+</div>
+<div class="card"><div class="table-wrap"><table class="table table-hover">
+  <thead><tr><th>Name</th><th>Username</th><th>Email</th><th id="extraTh">Gate</th><th>Status</th><th>Last login</th><th></th></tr></thead>
+  <tbody id="rows"></tbody>
+</table></div></div>
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><form class="modal-content" id="userForm" novalidate>
+    <div class="modal-header"><h5 class="modal-title" id="uTitle">Add account</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body">
+      <div class="mb-2"><label class="form-label" for="uUsername">Username</label><input class="form-control" id="uUsername" autocapitalize="none"><div class="invalid-feedback"></div></div>
+      <div class="mb-2"><label class="form-label" for="uName">Full name</label><input class="form-control" id="uName"><div class="invalid-feedback"></div></div>
+      <div class="mb-2"><label class="form-label" for="uEmail">Email</label><input class="form-control" id="uEmail" type="email"><div class="invalid-feedback"></div></div>
+      <div class="mb-2"><label class="form-label" for="uPassword">Password <span class="text-muted small" id="pwHint">(min 8, upper + lower + digit)</span></label>
+        <input class="form-control" id="uPassword" type="password" autocomplete="new-password"><div class="invalid-feedback"></div></div>
+      <div class="mb-2" id="gateWrap"><label class="form-label" for="uGate">Assigned gate</label><select class="form-select" id="uGate"></select><div class="invalid-feedback"></div></div>
+      <div class="mb-2" id="deptWrap"><label class="form-label" for="uDept">Department</label><select class="form-select" id="uDept"></select><div class="invalid-feedback"></div></div>
+      <div class="mb-2" id="phoneWrap"><label class="form-label" for="uPhone">Phone (optional)</label><input class="form-control" id="uPhone" maxlength="20"></div>
+      <div class="form-check form-switch mt-3 d-none" id="activeWrap"><input class="form-check-input" type="checkbox" id="uActive"><label class="form-check-label" for="uActive">Account is active</label></div>
+      <div class="alert alert-danger mt-3 d-none" id="uError"></div>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button class="btn btn-primary" type="submit">Save</button></div>
+  </form></div>
+</div>
+{% endblock %}
+{% block page_scripts %}<script src="{{ url_for('static', filename='js/admin_users.js') }}"></script>{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block body %}
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><span class="brand-mark">SC</span> SmartConnect</div>
+  <nav class="nav flex-column">
+    {% for label, url, key in nav %}
+      <a class="nav-link {{ 'active' if key == active }}" href="{{ url }}">{{ label }}</a>
+    {% endfor %}
+  </nav>
+  <div class="side-foot">
+    Signed in as<br><strong class="text-white">{{ current_user.full_name }}</strong><br>
+    <span class="text-capitalize">{{ role }}</span> · {{ network_mode }} mode
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <button class="btn btn-outline-primary btn-sm sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">Menu</button>
+    <h1 class="me-auto">{{ title }}</h1>
+    <span class="net-badge" id="netBadge" title="Server connection"><span class="dot"></span><span class="txt">Checking…</span></span>
+    <span class="ws-badge d-none d-md-inline" id="wsBadge" title="Live updates (WebSocket)"><span class="dot"></span><span class="txt">Live: off</span></span>
+    <div class="dropdown">
+      <button class="btn btn-outline-primary btn-sm position-relative" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-label="Notifications">
+        Alerts <span class="badge bg-danger rounded-pill d-none" id="notifCount">0</span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-end p-0" style="width:320px;max-width:90vw">
+        <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+          <strong>Notifications</strong>
+          <button class="btn btn-link btn-sm p-0" id="notifClear">Clear</button>
+        </div>
+        <div id="notifList" style="max-height:340px;overflow:auto"><div class="text-muted p-3 small">No notifications yet.</div></div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-sm" data-action="logout">Log out</button>
+  </header>
+  <main class="content">
+    <div id="offlineBanner" class="offline-banner mb-3 d-none">
+      You are offline or the server cannot be reached. Scans are saved on this device and stay
+      <strong>PENDING</strong> until the server verifies them.
+    </div>
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ vendor('socket.io.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app-shell.js') }}"></script>
+{% block page_scripts %}{% endblock %}
+{% endblock %}

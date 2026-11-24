@@ -1,0 +1,8 @@
+stateDiagram-v2
+  [*] --> PENDING: scan saved while offline
+  PENDING --> SYNCING: connection back, POST /api/sync
+  SYNCING --> SUCCESS: server verified the QR
+  SYNCING --> FAILED: server rejected (invalid, expired, used...)
+  SYNCING --> PENDING: network lost again, retry later
+  SUCCESS --> [*]
+  FAILED --> [*]

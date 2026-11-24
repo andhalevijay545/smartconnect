@@ -1,0 +1,36 @@
+{% extends "base_app.html" %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card"><div class="card-header d-flex justify-content-between align-items-center">Gates
+      <button class="btn btn-primary btn-sm" id="addGate">Add gate</button></div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>Gate</th><th>Location</th><th class="text-end">Inside</th><th class="text-end">In today</th><th class="text-end">Out today</th><th>Status</th><th></th></tr></thead>
+        <tbody id="gateRows"></tbody></table></div>
+      <div class="card-footer small text-muted">Assign guards to gates on the <a href="{{ url_for('pages.admin_users') }}">Users &amp; Staff</a> page.</div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card"><div class="card-header d-flex justify-content-between align-items-center">Departments
+      <button class="btn btn-primary btn-sm" id="addDept">Add department</button></div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>Department</th><th>Status</th><th></th></tr></thead>
+        <tbody id="deptRows"></tbody></table></div></div>
+  </div>
+</div>
+
+<div class="modal fade" id="nameModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><form class="modal-content" id="nameForm">
+    <div class="modal-header"><h5 class="modal-title" id="nTitle">Add</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body">
+      <label class="form-label" for="nName">Name</label><input class="form-control" id="nName" maxlength="80" required>
+      <div id="locWrap" class="mt-2"><label class="form-label" for="nLoc">Location</label><input class="form-control" id="nLoc" maxlength="160"></div>
+      <div class="alert alert-danger mt-3 d-none" id="nError"></div>
+    </div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button class="btn btn-primary" type="submit">Save</button></div>
+  </form></div>
+</div>
+{% endblock %}
+{% block page_scripts %}<script src="{{ url_for('static', filename='js/admin_gates.js') }}"></script>{% endblock %}

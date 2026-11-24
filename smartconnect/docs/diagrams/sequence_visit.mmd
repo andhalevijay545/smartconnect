@@ -1,0 +1,26 @@
+sequenceDiagram
+  autonumber
+  actor V as Visitor phone (WAN)
+  participant API as Flask REST API
+  participant DB as Database
+  participant WS as Socket.IO
+  actor H as Host
+  actor G as Guard phone (LAN)
+  V->>API: POST /api/visitors/register (HTTPS, JSON)
+  API->>DB: INSERT visitor + approval + qr_pass (token HASH only)
+  API-->>V: 201 + QR image + access key
+  API-)WS: visitor_registered
+  WS-)H: push to room host:id
+  H->>API: POST /api/approvals/id/decision
+  API->>DB: UPDATE approval, visitor = APPROVED
+  API-)WS: approval_updated
+  WS-)V: push to room visitor:public_id
+  G->>API: POST /api/qr/verify (token)
+  API->>DB: SELECT pass by HMAC hash (no change)
+  API-->>G: valid
+  G->>API: POST /api/visitors/check-in (token, operation_id)
+  API->>DB: UPDATE qr_passes SET consumed WHERE consumed IS NULL
+  API->>DB: INSERT visit_log (gate, staff, time)
+  API-->>G: 200 checked_in
+  API-)WS: visitor_checked_in
+  WS-)H: push (host room, admin room, security room)

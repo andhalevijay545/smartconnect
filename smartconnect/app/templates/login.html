@@ -1,0 +1,35 @@
+{% extends "base_public.html" %}
+{% block content %}
+<div class="container">
+  <div class="card auth-card">
+    <div class="card-body p-4">
+      <h2 class="h4 mb-1">Staff login</h2>
+      <p class="text-muted">Admins, security staff and host employees sign in here.</p>
+      <form id="loginForm" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="role">I am a</label>
+          <select class="form-select" id="role" required>
+            <option value="admin">Admin</option>
+            <option value="security">Security staff</option>
+            <option value="host">Host employee</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label>
+          <input class="form-control" id="username" autocomplete="username" autocapitalize="none" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-control" id="password" type="password" autocomplete="current-password" required>
+        </div>
+        <div class="alert alert-danger d-none" id="loginError" role="alert"></div>
+        <button class="btn btn-primary w-100" id="loginBtn" type="submit">Log in</button>
+      </form>
+      <hr>
+      <p class="small text-muted mb-0">Visitors do not log in. <a href="{{ url_for('pages.register') }}">Register your visit</a>
+        or <a href="{{ url_for('pages.visitor_pass') }}">open your pass</a>.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/login.js') }}"></script>{% endblock %}

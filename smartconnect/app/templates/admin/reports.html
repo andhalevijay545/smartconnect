@@ -1,0 +1,42 @@
+{% extends "base_app.html" %}
+{% block content %}
+<div class="card mb-3"><div class="card-body">
+  <div class="row g-2 align-items-end">
+    <div class="col-6 col-md-3"><label class="form-label small mb-1" for="period">Report</label>
+      <select class="form-select" id="period"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
+    <div class="col-6 col-md-3"><label class="form-label small mb-1" for="anchor">Date (inside the period)</label>
+      <input class="form-control" type="date" id="anchor"></div>
+    <div class="col-12 col-md-6 d-flex gap-2">
+      <button class="btn btn-primary" id="loadBtn">Show report</button>
+      <a class="btn btn-outline-primary" id="csvBtn" href="#">Export CSV</a>
+      <button class="btn btn-outline-secondary no-print" onclick="window.print()">Print</button>
+    </div>
+  </div>
+  <div class="small text-muted mt-2" id="label"></div>
+</div></div>
+
+<div class="row g-3 mb-3">
+  {% for id, label in [("sReg","Registered"),("sApp","Approved"),("sRej","Rejected"),("sIn","Check-ins"),("sOut","Check-outs"),("sAvg","Avg visit (min)")] %}
+  <div class="col-6 col-md-4 col-xl-2"><div class="card stat-card accent"><div class="label">{{ label }}</div><div class="value" id="{{ id }}">–</div></div></div>
+  {% endfor %}
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-lg-6"><div class="card"><div class="card-header">Visitors per day</div><div class="card-body"><div class="chart-box sm"><canvas id="cDay"></canvas></div></div></div></div>
+  <div class="col-lg-3"><div class="card"><div class="card-header">By department</div><div class="card-body"><div class="chart-box sm"><canvas id="cDept"></canvas></div></div></div></div>
+  <div class="col-lg-3"><div class="card"><div class="card-header">By gate</div><div class="card-body"><div class="chart-box sm"><canvas id="cGate"></canvas></div></div></div></div>
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-md-6"><div class="card"><div class="card-header">Department-wise visitor count</div><div class="table-wrap"><table class="table table-sm">
+    <thead><tr><th>Department</th><th class="text-end">Registered</th><th class="text-end">Check-ins</th></tr></thead><tbody id="tDept"></tbody></table></div></div></div>
+  <div class="col-md-6"><div class="card"><div class="card-header">Gate-wise visitor count</div><div class="table-wrap"><table class="table table-sm">
+    <thead><tr><th>Gate</th><th class="text-end">Check-ins</th><th class="text-end">Check-outs</th></tr></thead><tbody id="tGate"></tbody></table></div></div></div>
+</div>
+<div class="card"><div class="card-header">Visitor history</div><div class="table-wrap"><table class="table table-sm">
+  <thead><tr><th>Visitor</th><th>Department</th><th>Host</th><th>Purpose</th><th>In</th><th>Out</th><th>Entry gate</th><th>Exit gate</th><th class="text-end">Min</th></tr></thead>
+  <tbody id="tHist"></tbody></table></div></div>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ vendor('chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin_reports.js') }}"></script>
+{% endblock %}

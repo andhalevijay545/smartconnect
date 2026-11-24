@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title|default('SmartConnect') }} · SmartConnect</title>
+  <meta name="csrf-token" content="{{ csrf_token|default('') }}">
+  <meta name="theme-color" content="#0a2a66">
+  <link rel="manifest" href="{{ url_for('pages.manifest') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/icon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ vendor('bootstrap.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body data-page="{{ page_id|default('') }}" data-role="{{ role|default('') }}">
+{% block body %}{% endblock %}
+<div id="toastArea" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:2000"></div>
+<script src="{{ vendor('bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

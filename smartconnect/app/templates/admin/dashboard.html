@@ -1,0 +1,18 @@
+{% extends "base_app.html" %}
+{% block content %}
+{% include "_dash_stats.html" %}
+<div class="row g-3">
+  <div class="col-lg-7"><div class="card"><div class="card-header">Gate-wise statistics</div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>Gate</th><th class="text-end">Inside</th><th class="text-end">In today</th><th class="text-end">Out today</th><th class="text-end">All-time in</th></tr></thead>
+      <tbody id="gateRows"><tr><td colspan="5" class="text-muted text-center">Loading…</td></tr></tbody>
+    </table></div></div></div>
+  <div class="col-lg-5"><div class="card"><div class="card-header">Recent visitor activity</div>
+    <div class="card-body"><ul class="feed" id="feed"></ul></div></div></div>
+</div>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ vendor('chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

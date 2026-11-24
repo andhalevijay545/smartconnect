@@ -1,0 +1,26 @@
+{% extends "base_public.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <h1>QR-based visitor management for LAN and the Internet</h1>
+    <p class="lead">Register, get a one-time QR pass, get approved by your host and walk in. Security staff scan
+      passes with a phone camera - even when the network drops.</p>
+    <a class="btn btn-light btn-lg me-2" href="{{ url_for('pages.register') }}">Register as a visitor</a>
+    <a class="btn btn-outline-light btn-lg me-2" href="{{ url_for('pages.visitor_pass') }}">My visitor pass</a>
+    <a class="btn btn-outline-light btn-lg" href="{{ url_for('pages.login') }}">Staff login</a>
+  </div>
+</section>
+<div class="container my-4">
+  <div class="row g-3">
+    {% for title, text in [
+      ("Dynamic QR passes", "Random 256-bit tokens. Only a hash is stored. Passes expire and can be used once for entry and once for exit."),
+      ("Dual network", "Works on a local Wi-Fi (LAN) and on the public Internet (WAN) with the same code and the same database."),
+      ("Offline-first scanner", "Scans made without a connection stay PENDING and are verified by the server later, safely and without duplicates."),
+      ("Live dashboards", "WebSocket events update admins, guards and hosts instantly, only for the data they are allowed to see."),
+      ("Network monitor", "Real response times, status codes, WebSocket clients and sync state measured from actual traffic."),
+      ("Host approval", "The host employee approves or rejects each visitor and everyone is notified in real time.")] %}
+    <div class="col-md-6 col-lg-4"><div class="card feature"><h3>{{ title }}</h3><p class="mb-0 text-muted">{{ text }}</p></div></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

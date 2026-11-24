@@ -1,0 +1,15 @@
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+instance/*
+!instance/.gitkeep
+migrations/versions/__pycache__/
+.pytest_cache/
+*.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+app/static/vendor/
+.ruff_cache/

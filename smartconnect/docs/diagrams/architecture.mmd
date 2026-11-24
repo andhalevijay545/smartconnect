@@ -1,0 +1,22 @@
+flowchart TB
+  subgraph LANZONE["LAN  -  office Wi-Fi, private IPs 192.168.x.x"]
+    G["Guard phone<br/>QR scanner, camera"]
+    A["Admin / Host PC<br/>browser dashboard"]
+    RT["Wi-Fi router<br/>switch + DHCP"]
+    S["Local server - Windows PC<br/>python run.py<br/>Flask + Flask-SocketIO<br/>SQLite database"]
+    G -- "HTTP/HTTPS + WebSocket<br/>TCP/IP, port 5000" --> RT
+    A -- "HTTP/HTTPS + WebSocket" --> RT
+    RT --> S
+  end
+  subgraph WANZONE["WAN  -  the Internet, public IPs"]
+    V["Visitor phone<br/>mobile data"]
+    DNS["DNS<br/>name to IP"]
+    LB["Render load balancer<br/>TLS termination, HTTPS 443"]
+    W["Cloud server<br/>gunicorn + Flask + Flask-SocketIO"]
+    PG[("PostgreSQL<br/>central database")]
+    V -. "1 DNS query" .-> DNS
+    V -- "2 TCP + TLS handshake<br/>3 HTTPS request / WSS" --> LB
+    LB -- "X-Forwarded-For/Proto" --> W
+    W -- "SQLAlchemy" --> PG
+  end
+  S -. "same code base<br/>NETWORK_MODE=LAN" .- W

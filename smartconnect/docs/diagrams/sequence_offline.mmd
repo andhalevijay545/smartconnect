@@ -1,0 +1,27 @@
+sequenceDiagram
+  autonumber
+  actor G as Guard
+  participant B as Browser (scanner.js)
+  participant IDB as IndexedDB
+  participant SW as Service Worker
+  participant API as Flask API
+  participant DB as Database
+  G->>B: scans QR
+  B->>API: POST /api/qr/verify
+  Note over B,API: network is down - fetch() throws
+  B->>IDB: save op_id, type, token, time, status PENDING
+  B-->>G: Saved - NOT verified yet
+  Note over SW: pages and scripts still load from cache
+  B->>API: GET /api/network/ping every 5 s
+  API-->>B: pong - connection is back
+  B->>IDB: PENDING to SYNCING
+  B->>API: POST /api/sync (batch of operations)
+  API->>DB: INSERT sync_operation (UNIQUE operation_id)
+  alt operation_id already known
+    API-->>B: stored result, replayed = true
+  else new operation
+    API->>DB: verify token hash, consume pass, write visit_log
+    API-->>B: success or failed with reason
+  end
+  B->>IDB: SYNCING to SUCCESS or FAILED, token erased
+  B-->>G: Verified / Rejected

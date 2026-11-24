@@ -1,0 +1,8 @@
+stateDiagram-v2
+  [*] --> PENDING: registered, QR issued
+  PENDING --> APPROVED: host approves
+  PENDING --> REJECTED: host rejects
+  APPROVED --> INSIDE: guard check-in (QR consumed once)
+  INSIDE --> COMPLETED: guard check-out
+  REJECTED --> [*]
+  COMPLETED --> [*]

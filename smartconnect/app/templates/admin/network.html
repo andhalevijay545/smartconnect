@@ -1,0 +1,54 @@
+{% extends "base_app.html" %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+  <span class="small text-muted">Every figure on this page is measured from real requests, WebSocket connections and database rows.</span>
+  <select class="form-select form-select-sm w-auto ms-auto" id="window" aria-label="Time window">
+    <option value="15">Last 15 min</option><option value="60" selected>Last 60 min</option>
+    <option value="360">Last 6 hours</option><option value="1440">Last 24 hours</option>
+  </select>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-3"><div class="card stat-card accent"><div class="label">Server availability</div><div class="value fs-4" id="mAvail">–</div><div class="sub" id="mUptime">&nbsp;</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card accent"><div class="label">API response time</div><div class="value fs-4" id="mAvg">–</div><div class="sub" id="mPct">&nbsp;</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card accent"><div class="label">Browser round trip</div><div class="value fs-4" id="mRtt">–</div><div class="sub" id="mRttSub">&nbsp;</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card accent"><div class="label">WebSocket clients</div><div class="value fs-4" id="mWs">–</div><div class="sub">Connected right now</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card"><div class="label">Requests</div><div class="value" id="mTotal">–</div><div class="sub" id="mRate">&nbsp;</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card"><div class="label">Successful</div><div class="value text-success" id="mOk">–</div><div class="sub">HTTP &lt; 400</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card"><div class="label">Failed</div><div class="value text-danger" id="mFail">–</div><div class="sub">HTTP ≥ 400</div></div></div>
+  <div class="col-6 col-md-3"><div class="card stat-card"><div class="label">Database latency</div><div class="value fs-4" id="mDb">–</div><div class="sub" id="mDbEngine">&nbsp;</div></div></div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-6"><div class="card"><div class="card-header">Requests &amp; average response time</div><div class="card-body"><div class="chart-box"><canvas id="cTimeline"></canvas></div></div></div></div>
+  <div class="col-lg-6"><div class="card"><div class="card-header">Live browser latency (ping every 5 s)</div><div class="card-body"><div class="chart-box"><canvas id="cLive"></canvas></div></div></div></div>
+  <div class="col-lg-4"><div class="card"><div class="card-header">HTTP status codes</div><div class="card-body"><div class="chart-box sm"><canvas id="cCodes"></canvas></div></div></div></div>
+  <div class="col-lg-4"><div class="card"><div class="card-header">Traffic origin (LAN vs WAN)</div><div class="card-body"><div class="chart-box sm"><canvas id="cNet"></canvas></div></div></div></div>
+  <div class="col-lg-4"><div class="card"><div class="card-header">Synchronisation (offline operations)</div><div class="card-body"><div class="chart-box sm"><canvas id="cSync"></canvas></div>
+    <div class="small text-muted mt-2" id="syncLast">&nbsp;</div></div></div></div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-6"><div class="card"><div class="card-header">Network connection (this request)</div>
+    <div class="card-body"><dl class="row small mb-0" id="connInfo"></dl></div></div></div>
+  <div class="col-lg-6"><div class="card"><div class="card-header">DNS lookup demo</div><div class="card-body">
+    <form class="input-group mb-2" id="dnsForm"><input class="form-control" id="dnsHost" placeholder="host name, e.g. example.com">
+      <button class="btn btn-outline-primary">Resolve</button></form>
+    <div class="small" id="dnsOut">DNS turns a name into the IP address that TCP connects to. Enter a name to time a real lookup from the server.</div>
+  </div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-5"><div class="card"><div class="card-header">Connected WebSocket clients</div><div class="table-wrap"><table class="table table-sm">
+    <thead><tr><th>Role</th><th>Device</th><th>IP</th><th>Network</th></tr></thead><tbody id="wsRows"></tbody></table></div></div>
+    <div class="card mt-3"><div class="card-header">Busiest endpoints</div><div class="table-wrap"><table class="table table-sm">
+    <thead><tr><th>Endpoint</th><th class="text-end">Hits</th><th class="text-end">Avg ms</th><th class="text-end">Err</th></tr></thead><tbody id="topRows"></tbody></table></div></div></div>
+  <div class="col-lg-7"><div class="card"><div class="card-header">Request history (latest 60)</div><div class="table-wrap" style="max-height:520px;overflow:auto"><table class="table table-sm">
+    <thead><tr><th>Time</th><th>Device</th><th>Net</th><th>Method</th><th>Endpoint</th><th class="text-end">Status</th><th class="text-end">ms</th><th>TLS</th></tr></thead><tbody id="histRows"></tbody></table></div></div></div>
+</div>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ vendor('chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin_network.js') }}"></script>
+{% endblock %}

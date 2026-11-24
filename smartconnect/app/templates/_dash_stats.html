@@ -1,0 +1,21 @@
+{# Shared statistic cards + charts used by the admin, security and host dashboards. #}
+<div class="row g-3 mb-3">
+  {% for id, label, sub in [
+    ("statInside", "Inside now", "Live visitor count"),
+    ("statIn", "Today's check-ins", ""),
+    ("statOut", "Today's check-outs", ""),
+    ("statPending", "Pending approvals", "Waiting for a host"),
+    ("statRegistered", "Registered today", ""),
+    ("statExpected", "Expected today", "Not yet arrived")] %}
+  <div class="col-6 col-md-4 col-xl-2">
+    <div class="card stat-card accent"><div class="label">{{ label }}</div>
+      <div class="value" id="{{ id }}">–</div><div class="sub">{{ sub or '&nbsp;'|safe }}</div></div>
+  </div>
+  {% endfor %}
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-lg-8"><div class="card"><div class="card-header">Check-ins by hour (today)</div>
+    <div class="card-body"><div class="chart-box"><canvas id="chartHourly"></canvas></div></div></div></div>
+  <div class="col-lg-4"><div class="card"><div class="card-header">Visitors by status</div>
+    <div class="card-body"><div class="chart-box"><canvas id="chartStatus"></canvas></div></div></div></div>
+</div>
